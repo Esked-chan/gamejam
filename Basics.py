@@ -17,12 +17,13 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        img = pygame.image.load(os.path.join('images', 'hero.png')).convert()
-        self.images.append(img)
-        img.convert_alpha()
-        img.set_colorkey(ALPHA)
-        self.image = self.images[0]
-        self.rect = self.image.get_rect()
+        for p in range(0, 5):
+            img = pygame.image.load(os.path.join('images', 'Mainguy_frame_' + str(p) +'.png')).convert()
+            self.images.append(img)
+            img.convert_alpha()
+            img.set_colorkey(ALPHA)
+            self.image = self.images[0]
+            self.rect = self.image.get_rect()
         self.movex = 0
         self.movey = 0
         self.frame = 0
@@ -32,6 +33,16 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
+        if self.movex < 0:
+            self.frame += 1
+            if self.frame > 3 * ani:
+                self.frame = 0
+            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
+        if self.movex > 0:
+            self.frame += 1
+            if self.frame > 3 * ani:
+                self.frame = 0
+            self.image = self.images[self.frame // ani]
 
 class Enemy(Player):
     def __init__(self):
@@ -39,6 +50,8 @@ class Enemy(Player):
         self.images = []
         img = pygame.image.load(os.path.join('images', 'enemy.png')).convert()
         self.images.append(img)
+        img.convert_alpha()
+        img.set_colorkey(ALPHA)
         self.image = self.images[0]
         self.rect = self.image.get_rect()
         self.movex = 0
