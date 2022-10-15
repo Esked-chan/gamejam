@@ -5,11 +5,11 @@ import os
 # VARIABLES
 
 main = True
-worldx = 500
-worldy = 500
+worldx = 1920
+worldy = 1080
 fps = 60
 ani = 4
-
+ALPHA = (0, 255, 0)
 
 # OBJECTS
 
@@ -19,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.images = []
         img = pygame.image.load(os.path.join('images', 'hero.png')).convert()
         self.images.append(img)
+        img.convert_alpha()
+        img.set_colorkey(ALPHA)
         self.image = self.images[0]
         self.rect = self.image.get_rect()
         self.movex = 0
@@ -59,7 +61,7 @@ os.chdir(dname)
 clock = pygame.time.Clock()
 pygame.init()
 world = pygame.display.set_mode([worldx, worldy])
-backdrop = pygame.image.load(os.path.join('images', 'epic_bg.png'))
+backdrop = pygame.image.load(os.path.join('images', 'beach.png'))
 backdropbox = world.get_rect()
 player = Player()
 enemy_list = pygame.sprite.Group()
