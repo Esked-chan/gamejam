@@ -43,7 +43,16 @@ class Player(pygame.sprite.Sprite):
             if self.frame > 3 * ani:
                 self.frame = 0
             self.image = self.images[self.frame // ani]
-
+        if self.movey < 0:
+            self.frame += 1
+            if self.frame > 3 * ani:
+                self.frame = 0
+            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
+        if self.movey > 0:
+            self.frame += 1
+            if self.frame > 3 * ani:
+                self.frame = 0
+            self.image = self.images[self.frame // ani]
 class Enemy(Player):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -97,7 +106,7 @@ player.rect.x = 0
 player.rect.y = 0
 player_list = pygame.sprite.Group()
 player_list.add(player)
-steps = 10
+steps = 5
 stone = Stone()
 stone.rect.x = 800
 stone.rect.y = 400
