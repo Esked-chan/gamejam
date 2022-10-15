@@ -1,7 +1,7 @@
 import pygame
 
 
-class SpriteSheet:
+class SpriteSheet(object):
     def __init__(self, filename):
         try:
             self.sheet = pygame.image.load(filename).convert()
@@ -17,7 +17,7 @@ class SpriteSheet:
         if colorkey is not None:
             if colorkey is -1:
                 colorkey = image.get_at((0,0))
-            image.set_colorkey(colorkey, pygame.RLEACCEL)
+            image.set_colorkey((0, 255, 0), pygame.RLEACCEL)
         return image
 
 
@@ -33,7 +33,7 @@ class SpriteSheet:
 
     def load_grid_images(self, num_frames, sprite_size):
         sheet_rect = self.sheet.get_rect()
-        sprite_size = self.sprite_size
+        sprite_size = sprite_size
 
         sprite_rects = []
 
@@ -42,5 +42,5 @@ class SpriteSheet:
             sprite_rect = (x, 0, sprite_size, sprite_size)
             sprite_rects.append(sprite_rect)
      
-        return self.images_at(sprite_rects, (0, 255, 0))
+        return self.images_at(sprite_rects, None)
     
