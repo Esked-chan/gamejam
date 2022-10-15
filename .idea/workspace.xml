@@ -3,8 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="b9e5ee17-20ca-4c2b-bdd7-8f9f6db11506" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Basics.py" beforeDir="false" afterPath="$PROJECT_DIR$/Basics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/stones.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/stones.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/Mainguy_frame_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/Mainguy_frame_0.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/Mainguy_frame_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/Mainguy_frame_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/Mainguy_frame_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/Mainguy_frame_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/Mainguy_frame_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/Mainguy_frame_3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/Mainguy_frame_4.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/Mainguy_frame_4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/Mainguy_frame_5.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/Mainguy_frame_5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/enemy.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/enemy.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
