@@ -33,6 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.hitbox = self.rect
         self.hitbox.w += self.velocity
         self.hitbox.h += self.velocity
+        
     def control(self,x,y):
         self.rect.x += x
         self.rect.y += y
@@ -61,6 +62,7 @@ class Player(pygame.sprite.Sprite):
             if self.frame > 3 * ani:
                 self.frame = 0
             self.image = self.images[self.frame // ani]
+    
 
 class Enemy(Player):
     def __init__(self):
@@ -98,6 +100,33 @@ class Obstacle(Player):
         self.image = self.images[0]
         self.rect = self.image.get_rect()
 
+class Bullet(Player):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        img = pygame.image.load(os.path.join('images', 'Bullet.png')).convert()
+        img = pygame.transform.scale(img, (20, 30))
+        self.images.append(img)
+        img.convert_alpha()
+        img.set_colorkey(ALPHA)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.movex = 0
+        self.movey = 0
+        self.frame = 0
+        self.moving = False
+        self.velocity = 10
+        self.hitbox = self.rect
+        self.hitbox.w += self.velocity
+        self.hitbox.h += self.velocity
+    def control(self,x,y):
+        self.rect.x += x
+    def update(self):
+        self.rect.x = self.rect.x + self.movex
+
+
+        
+
 # SETUP
 
 abspath = os.path.abspath(__file__)
@@ -130,12 +159,26 @@ player.rect.x = 0
 player.rect.y = 0
 player_list = pygame.sprite.Group()
 player_list.add(player)
+bullet_list = pygame.sprite.Group()
+
+
+
+        
+
 
 # MAIN LOOP
 
 pygame.key.set_repeat(20,20)
 
 while main:
+    """
+    iii = 1
+
+    while iii < 850:
+        bullet.control(bullet.velocity , 0)
+        iii += 5
+        """
+    fire = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit(); sys.exit()
@@ -146,8 +189,19 @@ while main:
                 pygame.quit()
                 sys.exit()
                 main = False
+            if event.key == pygame.K_SPACE:
+                fire = True
+                pass
+            
         else:
             player.moving = False
+            if fire:
+                bullet = Bullet()
+                bullet.rect.x = player.rect.x + 60
+                bullet.rect.y = player.rect.y + 50
+                bullet_list.add(bullet)
+                fire = False
+                pass
             
         if (player.moving):
             if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -171,6 +225,8 @@ while main:
                 if (pygame.Rect.colliderect(player.hitbox, stone.rect)):
                     player.control(0, player.velocity)
             
+                    
+            
                 
 
 
@@ -189,9 +245,16 @@ while main:
             enemy_list.sprites()[i].velocityy *= -1
         if (pygame.Rect.colliderect(player.hitbox, enemy_list.sprites()[i].hitbox)):
             print("Collll")
-            
+
+    for i in range(len(bullet_list.sprites())):
+        bullet_list.sprites()[i].control(bullet_list.sprites()[i].velocity, 0)
+    
     enemy_list.draw(world)
     player_list.draw(world)
     obstacle_list.draw(world)
+    bullet_list.draw(world)
+
+
+        
     pygame.display.flip()
     clock.tick(fps)
