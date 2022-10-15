@@ -39,22 +39,24 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
-        if self.movex < 0:
+        xy = self.rect.x
+        yx = self.rect.y
+        if xy < 0:
             self.frame += 1
             if self.frame > 3 * ani:
                 self.frame = 0
             self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
-        if self.movex > 0:
+        if xy > 0:
             self.frame += 1
             if self.frame > 3 * ani:
                 self.frame = 0
             self.image = self.images[self.frame // ani]
-        if self.movey < 0:
+        if yx < 0:
             self.frame += 1
             if self.frame > 3 * ani:
                 self.frame = 0
             self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
-        if self.movey > 0:
+        if yx > 0:
             self.frame += 1
             if self.frame > 3 * ani:
                 self.frame = 0
@@ -131,7 +133,7 @@ player_list.add(player)
 
 # MAIN LOOP
 
-pygame.key.set_repeat(10,10)
+pygame.key.set_repeat(20,20)
 
 while main:
     for event in pygame.event.get():
@@ -140,30 +142,30 @@ while main:
             main = False
         if event.type == pygame.KEYDOWN:
             player.moving = True
-            
-        if event.type == pygame.KEYUP:
-            player.moving = False
             if event.key == ord('q'):
                 pygame.quit()
                 sys.exit()
                 main = False
+        else:
+            player.moving = False
+            
         if (player.moving):
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT or event.key == ord('a'):
                 if not (player.rect.x - player.velocity < 0):
                     player.control(-player.velocity, 0)
                 if (pygame.Rect.colliderect(player.hitbox, stone.rect)):
                     player.control(player.velocity, 0)
-            if event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_RIGHT or event.key == ord('d'):
                 if not (player.rect.x + player.velocity > worldx - player.rect.w):
                     player.control(player.velocity, 0)
                 if (pygame.Rect.colliderect(player.hitbox, stone.rect)):
                     player.control(-player.velocity, 0)
-            if event.key == pygame.K_DOWN:
+            if event.key == pygame.K_DOWN or event.key == ord('s'):
                 if not (player.rect.y + player.velocity > worldy - player.rect.h):
                     player.control(0, player.velocity)
                 if (pygame.Rect.colliderect(player.hitbox, stone.rect)):
                     player.control(0, -player.velocity)
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_UP or event.key == ord('w'):
                 if not (player.rect.y - player.velocity < 0):
                     player.control(0, -player.velocity)
                 if (pygame.Rect.colliderect(player.hitbox, stone.rect)):
@@ -173,7 +175,7 @@ while main:
 
 
     world.blit(backdrop, backdropbox)
-    #player.update()
+    player.update()
     for i in range (2):
         enemy_list.sprites()[i].control(enemy_list.sprites()[i].velocityx, enemy_list.sprites()[i].velocityy)
         enemy_list.sprites()[i].update()
