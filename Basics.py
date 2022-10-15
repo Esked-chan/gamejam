@@ -51,6 +51,16 @@ class Enemy(Player):
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
 
+class Stone(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        img = pygame.image.load(os.path.join('images', 'stones.png')).convert()
+        self.images.append(img)
+        img.convert_alpha()
+        img.set_colorkey(ALPHA)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
 
 # SETUP
 
@@ -75,6 +85,11 @@ player.rect.y = 0
 player_list = pygame.sprite.Group()
 player_list.add(player)
 steps = 10
+stone = Stone()
+stone.rect.x = 800
+stone.rect.y = 400
+object_list = pygame.sprite.Group()
+object_list.add(stone)
 
 # MAIN LOOP
 
@@ -106,6 +121,9 @@ while main:
                 pygame.quit()
                 sys.exit()
                 main = False
+
+    if pygame.Rect.colliderect(player.rect, stone.rect) == True:
+        print("Collision!")
     world.blit(backdrop, backdropbox)
     player.update()
     for i in range (2):
@@ -114,5 +132,6 @@ while main:
         enemy_list.sprites()[i].control(-steps / 10, 0)
     enemy_list.draw(world)
     player_list.draw(world)
+    object_list.draw(world)
     pygame.display.flip()
     clock.tick(fps)
