@@ -35,6 +35,10 @@ class Player(pygame.sprite.Sprite):
 
 # SETUP
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
 clock = pygame.time.Clock()
 pygame.init()
 world = pygame.display.set_mode([worldx, worldy])
