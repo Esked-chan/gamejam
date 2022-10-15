@@ -31,6 +31,25 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
 
+class Enemy(Player):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        img = pygame.image.load(os.path.join('images', 'enemy.png')).convert()
+        self.images.append(img)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.movex = 0
+        self.movey = 0
+        self.frame = 0
+    def control(self,x,y):
+        self.movex += x
+        self.movey += y
+    def update(self):
+        self.rect.x = self.rect.x + self.movex
+        self.rect.y = self.rect.y + self.movey
+
+
 # SETUP
 
 abspath = os.path.abspath(__file__)
@@ -43,6 +62,12 @@ world = pygame.display.set_mode([worldx, worldy])
 backdrop = pygame.image.load(os.path.join('images', 'epic_bg.png'))
 backdropbox = world.get_rect()
 player = Player()
+enemy_list = pygame.sprite.Group()
+for i in range (2):
+    tmp = Enemy()
+    tmp.rect.x = 100 + i * 50
+    tmp.rect.y = 100 + i * 50
+    enemy_list.add(tmp)
 player.rect.x = 0
 player.rect.y = 0
 player_list = pygame.sprite.Group()
@@ -52,6 +77,9 @@ steps = 10
 # MAIN LOOP
 
 while main:
+
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit(); sys.exit()
@@ -81,6 +109,11 @@ while main:
                 main = False
     world.blit(backdrop, backdropbox)
     player.update()
+    for i in range (2):
+        enemy_list.sprites()[i].control(steps / 10, 0)
+        enemy_list.sprites()[i].update()
+        enemy_list.sprites()[i].control(-steps / 10, 0)
+    enemy_list.draw(world)
     player_list.draw(world)
     pygame.display.flip()
     clock.tick(fps)
