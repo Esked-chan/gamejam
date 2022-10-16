@@ -110,7 +110,7 @@ while main:
                 pygame.quit()
                 sys.exit()
                 main = False
-        if event.type == pygame.KEYUP:
+        else:
             player.moving = False
         if (player.moving):
             if event.key == pygame.K_LEFT or event.key == ord('a'):

@@ -144,7 +144,7 @@ os.chdir(dname)
 clock = pygame.time.Clock()
 pygame.init()
 world = pygame.display.set_mode([worldx, worldy])
-backdrop = pygame.image.load('C:/Users/toufi/Downloads/gamejam-main/gamejam-main/images/beach (1).png')
+backdrop = pygame.image.load('images/beach.png')
 backdropbox = world.get_rect()
 player = Player()
 

@@ -30,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.h += self.speed
         self.facing = 1 # -1: LEFT    0: UP    1: RIGHT    2: DOWN
         self.hit = False
-        self.reloading = 1000
+        self.reloading = 500
 
     def move(self):
         if (self.rect.x < 0):
@@ -124,13 +124,13 @@ class Bullet(pygame.sprite.Sprite):
         self.images = []
         for fireball in range(0, 2):
             img = pygame.image.load(os.path.join('images/Fireball', 'Fireball' + str(fireball) + '.png')).convert()
-            img = pygame.transform.scale(img, (20, 30))
+            img = pygame.transform.scale(img, (60, 90))
             self.images.append(img)
             img.convert_alpha()
             img.set_colorkey(ALPHA)
             self.image = self.images[0]
             self.rect = self.image.get_rect()
-        self.speed = 20
+        self.speed = 10
         self.velocityX = 0
         self.velocityY = 0
         self.facing = facing
@@ -320,10 +320,13 @@ while True:
     else:
         player.velocityY = 0
     if (keys[pygame.K_SPACE]):
-        bullet = Bullet(player.facing)
-        bullet.rect.x = player.rect.x
-        bullet.rect.y = player.rect.y
-        bullet_list.add(bullet)
+        current_time = pygame.time.get_ticks()
+        if (current_time - prev_time > player.reloading):
+            bullet = Bullet(player.facing)
+            bullet.rect.x = player.rect.x
+            bullet.rect.y = player.rect.y
+            bullet_list.add(bullet)
+            prev_time = current_time
 
     for i in range(len(stone_list)):
         if (pygame.Rect.colliderect(player.hitbox, stone_list.sprites()[i].rect)):

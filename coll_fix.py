@@ -12,7 +12,7 @@ fps = 60
 ani = 4
 ALPHA = (0, 255, 0)
 
-# OBJECTS		
+# OBJECTS
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -171,14 +171,6 @@ bullet_list = pygame.sprite.Group()
 pygame.key.set_repeat(20,20)
 
 while main:
-    """
-    iii = 1
-
-    while iii < 850:
-        bullet.control(bullet.velocity , 0)
-        iii += 5
-        """
-    fire = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit(); sys.exit()
@@ -190,18 +182,12 @@ while main:
                 sys.exit()
                 main = False
             if event.key == pygame.K_SPACE:
-                fire = True
-                pass
-            
-        else:
-            player.moving = False
-            if fire:
                 bullet = Bullet()
                 bullet.rect.x = player.rect.x + 60
                 bullet.rect.y = player.rect.y + 50
                 bullet_list.add(bullet)
-                fire = False
-                pass
+        else:
+            player.moving = False
             
         if (player.moving):
             if event.key == pygame.K_LEFT or event.key == ord('a'):
@@ -224,6 +210,11 @@ while main:
                     player.control(0, -player.velocity)
                 if (pygame.Rect.colliderect(player.hitbox, stone.rect)):
                     player.control(0, player.velocity)
+            if event.key == pygame.K_SPACE:
+                bullet = Bullet()
+                bullet.rect.x = player.rect.x + 60
+                bullet.rect.y = player.rect.y + 50
+                bullet_list.add(bullet)
             
                     
             
