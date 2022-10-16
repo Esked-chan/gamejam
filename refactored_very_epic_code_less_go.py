@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.frame = 0
         self.velocityX = 0
         self.velocityY = 0
-        self.speed = 10
+        self.speed = 5
         self.hitbox = self.rect
         self.hitbox.w += self.speed
         self.hitbox.h += self.speed
