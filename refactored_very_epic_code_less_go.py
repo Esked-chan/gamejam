@@ -3,16 +3,16 @@ import sys
 import os
 import random
 
-def gameStart():
+def gameStart(w, h):
 
-    worldx = 800
-    worldy = 600
+    worldx = w
+    worldy = h
     fps = 60
     ani = 10
     ALPHA = (0, 255, 0)
     Black = (0 , 0 , 0)
     Red = (255, 0, 0)
-    enemy_reload = 700
+    enemy_reload = 2000
 
     h1 = 882
     h2 = 12
@@ -41,7 +41,7 @@ def gameStart():
             self.hitbox.h += self.speed
             self.facing = 1 # -1: LEFT    0: UP    1: RIGHT    2: DOWN
             self.hit = False
-            self.reloading = 200
+            self.reloading = 700
             self.flipped = False
             self.score = 0
 
@@ -141,7 +141,7 @@ def gameStart():
             self.images = []
             for fireball in range(0, 3):
                 img = pygame.image.load(os.path.join('images/Fireball', 'Fireball' + str(fireball) + '.png')).convert()
-                img = pygame.transform.scale(img, (60, 90))
+                img = pygame.transform.scale(img, (30, 45))
                 self.images.append(img)
                 img.convert_alpha()
                 img.set_colorkey(ALPHA)
@@ -301,7 +301,7 @@ def gameStart():
     prev_bull_time = pygame.time.get_ticks()
     prev_enemy_time = pygame.time.get_ticks()
 
-    font = pygame.font.Font('freesansbold.ttf', 32)
+    font = pygame.font.Font('herculanum.ttf', 32)
     text = font.render('SCORE: ' + str(player.score), True, (0, 0, 128))
     textRect = text.get_rect()
     textRect.center = (worldx - 200, 60)
@@ -403,10 +403,21 @@ def gameStart():
             enemy_list.add(enemy_tmp)
             prev_enemy_time = current_time
 
-        if player.score >= 10:
+        if player.score >= 40:
             enemy_list.empty()
             bullet_list.empty()
             return
+        elif player.score >= 30:
+            player.reloading = 300
+        elif player.score >= 20:
+            enemy_reload = 800
+        elif player.score >= 15:
+            enemy_reload = 1100
+        elif player.score >= 10:
+            player.reloading = 500
+        elif player.score >= 5:
+            enemy_reload = 1500
+            
 
         clock.tick(fps)
         pygame.display.flip()
