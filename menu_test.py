@@ -8,8 +8,12 @@ from mixer import *
 
 pygame.init()
 
-firesound = pygame.mixer.Sound('C:/Users/toufi/Downloads/gamejam-main (4)/gamejam-main/Sounds 4/Vehicles/FIREBALLS_-_179_unique_fire_sound_effects_for_fires,_flames_and_burning_whoosh_sounds.mp3')
-gameover = pygame.mixer.Sound('C:/Users/toufi/Downloads/gamejam-main (4)/gamejam-main/Sounds 3/Misc/wav/Electric1Loop.wav')
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+firesound = pygame.mixer.Sound('Sounds 4/Vehicles/FIREBALLS_-_179_unique_fire_sound_effects_for_fires,_flames_and_burning_whoosh_sounds.mp3')
+gameover = pygame.mixer.Sound('Sounds 3/Misc/wav/Electric1Loop.wav')
 def drawMenu():
     pass
 
@@ -104,7 +108,7 @@ def main():
     icon = pygame.image.load('images/Logo.png')
     pygame.display.set_icon(icon)
 
-    #videoPlay(worldx, worldy)
+    videoPlay(worldx, worldy)
 
     font = pygame.font.Font('herculanum.ttf', 32)
     text = font.render('START', True, (30, 30, 30))

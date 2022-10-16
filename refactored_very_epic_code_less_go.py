@@ -6,8 +6,12 @@ import random
 
 pygame.init()
 
-firesound = pygame.mixer.Sound('C:/Users/toufi/Downloads/gamejam-main (4)/gamejam-main/Sounds 2/Guns/wav/Gun10.wav')
-blast = pygame.mixer.Sound('C:/Users/toufi/Downloads/gamejam-main (4)/gamejam-main/Sounds 3/Misc/wav/Swipe1.wav')
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+firesound = pygame.mixer.Sound('Sounds 2/Guns/wav/Gun10.wav')
+blast = pygame.mixer.Sound('Sounds 3/Misc/wav/Swipe1.wav')
 
 def gameStart(w, h):
 
@@ -257,11 +261,6 @@ def gameStart(w, h):
             if min_ix == 3:
                 self.velocityY = -self.speed
                 self.velocityY -= self.speed
-
-
-    abspath = os.path.abspath(__file__)
-    dname = os.path.dirname(abspath)
-    os.chdir(dname)
 
     clock = pygame.time.Clock()
     world = pygame.display.set_mode([worldx, worldy])
