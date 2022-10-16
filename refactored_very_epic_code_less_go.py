@@ -316,10 +316,14 @@ while True:
             bullet.rect.y = player.rect.y
             bullet_list.add(bullet)
             prev_time = current_time
+
     for i in range(len(enemy_list)):
         for j in range(len(bullet_list)):
             if (pygame.Rect.colliderect(bullet_list.sprites()[j].rect, enemy_list.sprites()[i].rect)):
-                print("Collision!")
+                enemy_list.sprites()[i].rect.x = worldx * 2
+                enemy_list.sprites()[i].rect.y = worldy * 2
+                bullet_list.sprites()[j].rect.x = worldx * 3
+                bullet_list.sprites()[j].rect.y = worldy * 3
 
     for i in range(len(stone_list)):
         if (pygame.Rect.colliderect(player.hitbox, stone_list.sprites()[i].rect)):
@@ -339,8 +343,11 @@ while True:
     player.move()
     for i in range(len(enemy_list.sprites())):
         enemy_list.sprites()[i].animate()
+
     for i in range(len(bullet_list.sprites())):
         bullet_list.sprites()[i].animate()
+
+
 
     player_list.draw(world)
     stone_list.draw(world)
