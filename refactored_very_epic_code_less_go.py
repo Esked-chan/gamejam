@@ -1,14 +1,17 @@
 import pygame
 import sys
 import os
+import random
+from menu_test import *
 
-worldx = 1080
-worldy = 720
+worldx = 800
+worldy = 600
 fps = 60
 ani = 10
 ALPHA = (0, 255, 0)
 Black = (0 , 0 , 0)
 Red = (255, 0, 0)
+enemy_reload = 700
 
 h1 = 882
 h2 = 12
@@ -37,8 +40,9 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.h += self.speed
         self.facing = 1 # -1: LEFT    0: UP    1: RIGHT    2: DOWN
         self.hit = False
-        self.reloading = 500
+        self.reloading = 200
         self.flipped = False
+        self.score = 0
 
     def move(self):
         if (self.rect.x < 0):
@@ -48,7 +52,7 @@ class Player(pygame.sprite.Sprite):
         if (self.rect.y - self.speed < 0):
             self.velocityY = 1
         if (self.rect.y + self.rect.h > worldy):
-            self.velocityY = -1 
+            self.velocityY = -1
 
         self.rect.x += self.velocityX
         self.rect.y += self.velocityY
@@ -183,7 +187,6 @@ class Bullet(pygame.sprite.Sprite):
         if not self.player_flipped:
             self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
         
-
 class Enemy(Player):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -243,12 +246,16 @@ class Enemy(Player):
 
         if min_ix == 0:
             self.velocityX = self.speed
+            self.rect.x += self.speed
         if min_ix == 1:
             self.velocityY = self.speed
+            self.rect.y += self.speed
         if min_ix == 2:
             self.velocityX = -self.speed
+            self.rect.x -= self.speed
         if min_ix == 3:
             self.velocityY = -self.speed
+            self.velocityY -= self.speed
 
 
 abspath = os.path.abspath(__file__)
@@ -266,17 +273,18 @@ player_list = pygame.sprite.Group()
 player_list.add(player)
 
 stone = Obstacle()
-stone.rect.x = 200
+stone.rect.x = 300
 stone.rect.y = 300
 stone_list = pygame.sprite.Group()
 stone_list.add(stone)
+
 stone2 = Obstacle()
-stone2.rect.x = 300
-stone2.rect.y = 410
+stone2.rect.x = 400
+stone2.rect.y = 200
 stone_list.add(stone2)
 
 bullet_list = pygame.sprite.Group()
- 
+
 #guys ur crazy, PiiPiiPooPoo LETSGOOOOOOOOOOOOOOOOOOOOOOOOO
 
 enemy1 = Enemy()
@@ -289,7 +297,13 @@ enemy2.rect.x = 500
 enemy2.rect.y = 100
 enemy_list.add(enemy2)
 
-prev_time = pygame.time.get_ticks()
+prev_bull_time = pygame.time.get_ticks()
+prev_enemy_time = pygame.time.get_ticks()
+
+font = pygame.font.Font('freesansbold.ttf', 32)
+text = font.render('SCORE: ' + str(player.score), True, (0, 0, 128))
+textRect = text.get_rect()
+textRect.center = (worldx - 200, 60)
 
 while True:
 
@@ -318,20 +332,25 @@ while True:
         player.velocityY = 0
     if (keys[pygame.K_SPACE]):
         current_time = pygame.time.get_ticks()
-        if (current_time - prev_time > player.reloading):
+        if (current_time - prev_bull_time > player.reloading):
             bullet = Bullet(player.flipped)
             bullet.rect.x = player.rect.x
             bullet.rect.y = player.rect.y
             bullet_list.add(bullet)
-            prev_time = current_time
+            prev_bull_time = current_time
+    if (keys[pygame.K_q]):
+        pygame.quit(); sys.exit()
 
     for i in range(len(enemy_list)):
         for j in range(len(bullet_list)):
             if (pygame.Rect.colliderect(bullet_list.sprites()[j].rect, enemy_list.sprites()[i].rect)):
                 enemy_list.sprites()[i].rect.x = worldx * 2
                 enemy_list.sprites()[i].rect.y = worldy * 2
+                enemy_list.sprites()[i].velocityX = 0
+                enemy_list.sprites()[i].velocityY = 0
                 bullet_list.sprites()[j].rect.x = worldx * 3
                 bullet_list.sprites()[j].rect.y = worldy * 3
+                player.score += 1
 
     for i in range(len(stone_list)):
         if (pygame.Rect.colliderect(player.hitbox, stone_list.sprites()[i].rect)):
@@ -371,6 +390,22 @@ while True:
     if (keys[pygame.K_RIGHT]):
         pygame.draw.rect(world, Red, rectangle3, 5)
         h3 += 5
+
+    text = font.render('SCORE:' + str(player.score), True, (0, 0, 128))
+    world.blit(text, textRect)
+    
+    current_time = pygame.time.get_ticks()
+    if (current_time - prev_enemy_time > enemy_reload):
+        enemy_tmp = Enemy()
+        enemy_tmp.rect.x = worldx - 200
+        enemy_tmp.rect.y = random.randint(100, worldy - 100)
+        enemy_list.add(enemy_tmp)
+        prev_enemy_time = current_time
+
+    if player.score >= 10:
+        enemy_list.empty()
+        bullet_list.empty()
+        drawGameOver(world)
 
     clock.tick(fps)
     pygame.display.flip()

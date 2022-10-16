@@ -15,8 +15,18 @@ def drawOptions():
     pass
 
 
-def drawGameOver():
-    pass
+def drawGameOver(screen):
+    path = os.path.dirname(os.path.realpath(__file__))
+    bg = pygame.image.load(path + "/epic_bg.png")
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    text = font.render('YOU WON', True, (0, 0, 128))
+    textRect = text.get_rect()
+    textRect.center = (300, 300)
+    screen.blit(bg, (0, 0))
+    screen.blit(text, textRect)
+
+    pygame.display.update()
+
 
 
 def gameEnded():
