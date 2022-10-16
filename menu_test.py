@@ -1,13 +1,14 @@
 import pygame
 from enum import Enum
 import os
+from refactored_very_epic_code_less_go import *
 
 def drawMenu():
     pass
 
 
 def drawGame():
-    pass
+    gameStart()
 
 
 def drawOptions():
@@ -37,7 +38,7 @@ def main():
 
     pygame.init()
 
-    win = pygame.display.set_mode((500,500))
+    win = pygame.display.set_mode((1080, 720))
     pygame.display.set_caption("peepee poopoo")
 
     font = pygame.font.Font('freesansbold.ttf', 32)
@@ -75,8 +76,7 @@ def main():
             if (textRect.collidepoint(mouse_pos) and mouseDown):
                 state = gameState.INGAME
         elif (state == gameState.INGAME):
-            text = font.render("YAYY!!", True, (0, 128, 0))
-            win.blit(text, textRect)
+            drawGame()
         elif (state == gameState.OPTIONS):
             drawOptions()
         elif (state == gameState.GAMEOVER):
