@@ -15,15 +15,15 @@ def drawOptions():
     pass
 
 
-def drawGameOver(screen):
+def drawGameOver(win):
     path = os.path.dirname(os.path.realpath(__file__))
     bg = pygame.image.load(path + "/epic_bg.png")
     font = pygame.font.Font('freesansbold.ttf', 32)
     text = font.render('YOU WON', True, (0, 0, 128))
     textRect = text.get_rect()
     textRect.center = (300, 300)
-    screen.blit(bg, (0, 0))
-    screen.blit(text, textRect)
+    win.blit(bg, (0, 0))
+    win.blit(text, textRect)
 
     pygame.display.update()
 
@@ -31,7 +31,7 @@ def drawGameOver(screen):
 
 def gameEnded():
     pygame.quit()
-    quit()
+    sys.exit()
 
 
 
@@ -48,7 +48,7 @@ def main():
 
     pygame.init()
 
-    win = pygame.display.set_mode((1080, 720))
+    win = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("peepee poopoo")
 
     font = pygame.font.Font('freesansbold.ttf', 32)
@@ -87,10 +87,11 @@ def main():
                 state = gameState.INGAME
         elif (state == gameState.INGAME):
             drawGame()
+            state = gameState.GAMEOVER
         elif (state == gameState.OPTIONS):
             drawOptions()
         elif (state == gameState.GAMEOVER):
-            drawGameOver()
+            drawGameOver(win)
         elif (state == gameState.ENDED):
             gameEnded()
 
