@@ -2,11 +2,18 @@ import pygame
 import sys
 import os
 
-worldx = 800
-worldy = 600
+worldx = 1080
+worldy = 720
 fps = 60
 ani = 10
 ALPHA = (0, 255, 0)
+Black = (0 , 0 , 0)
+Red = (255, 0, 0)
+
+h1 = 882
+h2 = 12
+h3 = 0
+h4 = 26
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -316,11 +323,14 @@ while True:
             bullet.rect.y = player.rect.y
             bullet_list.add(bullet)
             prev_time = current_time
-    #for i in range(len(enemy_list)):
-        #for j in range(len(bullet_list)):
-            #if (pygame.Rect.colliderect(bullet_list.sprites()[j].rect, enemy_list.sprites()[i].rect)):
-                #enemy_list.remove(enemy_list.sprites()[i])
-                #bullet_list.remove(bullet_list.sprites()[j])
+
+    for i in range(len(enemy_list)):
+        for j in range(len(bullet_list)):
+            if (pygame.Rect.colliderect(bullet_list.sprites()[j].rect, enemy_list.sprites()[i].rect)):
+                enemy_list.sprites()[i].rect.x = worldx * 2
+                enemy_list.sprites()[i].rect.y = worldy * 2
+                bullet_list.sprites()[j].rect.x = worldx * 3
+                bullet_list.sprites()[j].rect.y = worldy * 3
 
     for i in range(len(stone_list)):
         if (pygame.Rect.colliderect(player.hitbox, stone_list.sprites()[i].rect)):
@@ -340,14 +350,26 @@ while True:
     player.move()
     for i in range(len(enemy_list.sprites())):
         enemy_list.sprites()[i].animate()
+
     for i in range(len(bullet_list.sprites())):
         bullet_list.sprites()[i].animate()
+
+
 
     player_list.draw(world)
     stone_list.draw(world)
     bullet_list.draw(world)
     enemy_list.draw(world)
 
+    rectangle1 = pygame.Rect(h1,10,200,30)
+    rectangle2 = pygame.Rect(880,10,200,30)
+    rectangle3 = pygame.Rect(882,h2,h3,h4)
+    pygame.draw.rect(world, ALPHA, rectangle1)
+    pygame.draw.rect(world, Black, rectangle2, 2)
+    pygame.draw.rect(world, Red, rectangle3)
+    if (keys[pygame.K_RIGHT]):
+        pygame.draw.rect(world, Red, rectangle3, 5)
+        h3 += 5
+
     clock.tick(fps)
     pygame.display.flip()
-            
