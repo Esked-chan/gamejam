@@ -334,6 +334,10 @@ while True:
             bullet.rect.y = player.rect.y
             bullet_list.add(bullet)
             prev_time = current_time
+    for i in range(len(enemy_list)):
+        for j in range(len(bullet_list)):
+            if (pygame.Rect.colliderect(bullet_list.sprites()[j].rect, enemy_list.sprites()[i].rect)):
+                print("Collision!")
 
     for i in range(len(stone_list)):
         if (pygame.Rect.colliderect(player.hitbox, stone_list.sprites()[i].rect)):
