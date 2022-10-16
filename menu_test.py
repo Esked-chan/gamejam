@@ -6,6 +6,10 @@ from moviepy.editor import *
 from video_preview import *
 from mixer import *
 
+pygame.init()
+
+firesound = pygame.mixer.Sound('C:/Users/toufi/Downloads/gamejam-main (4)/gamejam-main/Sounds 4/Vehicles/FIREBALLS_-_179_unique_fire_sound_effects_for_fires,_flames_and_burning_whoosh_sounds.mp3')
+gameover = pygame.mixer.Sound('C:/Users/toufi/Downloads/gamejam-main (4)/gamejam-main/Sounds 3/Misc/wav/Electric1Loop.wav')
 def drawMenu():
     pass
 
@@ -24,6 +28,7 @@ def drawOptions():
 
 
 def drawGameOver(worldx, worldy, win, msg):
+    pygame.mixer.Sound.play(gameover)
     bg = pygame.image.load("images/forest.png")
     bg = pygame.transform.scale(bg, (worldx, worldy))
     font = pygame.font.Font('herculanum.ttf', 64)
@@ -57,7 +62,7 @@ def drawGameOver(worldx, worldy, win, msg):
             drawGame(worldx, worldy, win)
             main = False
         if (textRect3.collidepoint(mouse_pos) and mouseDown):
-            pygame.quit; sys.quit()
+            pygame.quit(); sys.exit()
 
         win.blit(bg, (0, 0))
         win.blit(text, textRect)
@@ -78,6 +83,7 @@ def gameEnded():
 
 
 def main():
+    pygame.mixer.Sound.play(firesound)
     class gameState(Enum):
         MENU = 0
         INGAME = 1
@@ -85,14 +91,13 @@ def main():
         GAMEOVER = 3
         ENDED = 4
 
-    worldx = 800
-    worldy = 600
+    worldx = 1080
+    worldy = 720
 
     abspath = os.path.abspath(__file__)
     dname = os.path.dirname(abspath)
     os.chdir(dname)
 
-    pygame.init()
 
     win = pygame.display.set_mode((worldx, worldy))
     pygame.display.set_caption('Flame Frame')
@@ -104,7 +109,7 @@ def main():
     font = pygame.font.Font('herculanum.ttf', 32)
     text = font.render('START', True, (30, 30, 30))
     textRect = text.get_rect()
-    textRect.center = (650, 260)
+    textRect.center = (870, 310)
 
     mouse_pos = pygame.mouse.get_pos()
 
@@ -135,6 +140,7 @@ def main():
             if (textRect.collidepoint(mouse_pos) and mouseDown):
                 state = gameState.INGAME
         elif (state == gameState.INGAME):
+            pygame.mixer.Sound.stop(firesound)
             drawGame(worldx, worldy, win)
             state = gameState.GAMEOVER
         elif (state == gameState.OPTIONS):

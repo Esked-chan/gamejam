@@ -4,6 +4,11 @@ import sys
 import os
 import random
 
+pygame.init()
+
+firesound = pygame.mixer.Sound('C:/Users/toufi/Downloads/gamejam-main (4)/gamejam-main/Sounds 2/Guns/wav/Gun10.wav')
+blast = pygame.mixer.Sound('C:/Users/toufi/Downloads/gamejam-main (4)/gamejam-main/Sounds 3/Misc/wav/Swipe1.wav')
+
 def gameStart(w, h):
 
     worldx = w
@@ -11,14 +16,8 @@ def gameStart(w, h):
     fps = 60
     ani = 10
     ALPHA = (0, 255, 0)
-    Black = (0 , 0 , 0)
-    Red = (255, 0, 0)
     enemy_reload = 2000
 
-    h1 = 882
-    h2 = 12
-    h3 = 0
-    h4 = 26
 
     class Player(pygame.sprite.Sprite):
         def __init__(self):
@@ -264,7 +263,6 @@ def gameStart(w, h):
     dname = os.path.dirname(abspath)
     os.chdir(dname)
 
-    pygame.init()
     clock = pygame.time.Clock()
     world = pygame.display.set_mode([worldx, worldy])
     backdrop = pygame.image.load(os.path.join('images', 'beach.png'))
@@ -335,6 +333,7 @@ def gameStart(w, h):
         if (keys[pygame.K_SPACE]):
             current_time = pygame.time.get_ticks()
             if (current_time - prev_bull_time > player.reloading):
+                pygame.mixer.Sound.play(firesound)
                 bullet = Bullet(player.flipped)
                 bullet.rect.x = player.rect.x
                 bullet.rect.y = player.rect.y
@@ -346,6 +345,7 @@ def gameStart(w, h):
         for i in range(len(enemy_list)):
             for j in range(len(bullet_list)):
                 if (pygame.Rect.colliderect(bullet_list.sprites()[j].rect, enemy_list.sprites()[i].rect)):
+                    pygame.mixer.Sound.play(blast)
                     enemy_list.sprites()[i].rect.x = worldx * 2
                     enemy_list.sprites()[i].rect.y = worldy * 2
                     enemy_list.sprites()[i].velocityX = 0
@@ -387,17 +387,9 @@ def gameStart(w, h):
         bullet_list.draw(world)
         enemy_list.draw(world)
 
-        rectangle1 = pygame.Rect(h1,10,200,30)
-        rectangle2 = pygame.Rect(880,10,200,30)
-        rectangle3 = pygame.Rect(882,h2,h3,h4)
-        pygame.draw.rect(world, ALPHA, rectangle1)
-        pygame.draw.rect(world, Black, rectangle2, 2)
-        pygame.draw.rect(world, Red, rectangle3)
-        if (keys[pygame.K_RIGHT]):
-            pygame.draw.rect(world, Red, rectangle3, 5)
-            h3 += 5
 
-        text = font.render('SCORE:' + str(player.score), True, (0, 0, 128))
+
+        text = font.render('SCORE:' + str(player.score), True, (30, 30, 30))
         world.blit(text, textRect)
         
         current_time = pygame.time.get_ticks()
