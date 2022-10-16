@@ -58,7 +58,8 @@ class Player(pygame.sprite.Sprite):
         #self.velocityY = 0
 
         array = [0, 0, 0, 0]
-        # I tried to make comments and they made this even more confusing
+        # I tried to make comments and they made this even more confusing - Mikki
+        #Its okay, man! - Mika
 
         tmp = abs(self.rect.x - (rectB.x + rectB.w))
         array[0] = tmp
