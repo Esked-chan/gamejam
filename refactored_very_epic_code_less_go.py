@@ -1,3 +1,4 @@
+from turtle import back
 import pygame
 import sys
 import os
@@ -37,8 +38,8 @@ def gameStart(w, h):
             self.velocityY = 0
             self.speed = 5
             self.hitbox = self.rect
-            self.hitbox.w += self.speed
-            self.hitbox.h += self.speed
+            self.hitbox.w -= 40
+            self.hitbox.h -= 40
             self.facing = 1 # -1: LEFT    0: UP    1: RIGHT    2: DOWN
             self.hit = False
             self.reloading = 700
@@ -267,6 +268,7 @@ def gameStart(w, h):
     clock = pygame.time.Clock()
     world = pygame.display.set_mode([worldx, worldy])
     backdrop = pygame.image.load(os.path.join('images', 'beach.png'))
+    backdrop = pygame.transform.scale(backdrop, (worldx, worldy))
     backdropbox = world.get_rect()
 
     player = Player()
@@ -274,8 +276,8 @@ def gameStart(w, h):
     player_list.add(player)
 
     stone = Obstacle()
-    stone.rect.x = 300
-    stone.rect.y = 300
+    stone.rect.x = 200
+    stone.rect.y = 500
     stone_list = pygame.sprite.Group()
     stone_list.add(stone)
 
@@ -302,12 +304,11 @@ def gameStart(w, h):
     prev_enemy_time = pygame.time.get_ticks()
 
     font = pygame.font.Font('herculanum.ttf', 32)
-    text = font.render('SCORE: ' + str(player.score), True, (0, 0, 128))
+    text = font.render('SCORE: ' + str(player.score), True, (0, 0, 0))
     textRect = text.get_rect()
-    textRect.center = (worldx - 200, 60)
+    textRect.center = (worldx - 200, 30)
 
     while True:
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit(); sys.exit()
@@ -366,6 +367,10 @@ def gameStart(w, h):
                     enemy_list.sprites()[i].coll_adj(stone_list.sprites()[j].rect)
                 enemy_list.sprites()[i].move()
 
+        for i in range(len(enemy_list)):
+            if (pygame.Rect.colliderect(enemy_list.sprites()[i].rect, player.hitbox)):
+                return player.score
+
         world.blit(backdrop, backdropbox)
         player.animate()
         player.move()
@@ -406,7 +411,7 @@ def gameStart(w, h):
         if player.score >= 40:
             enemy_list.empty()
             bullet_list.empty()
-            return
+            return player.score
         elif player.score >= 30:
             player.reloading = 300
         elif player.score >= 20:

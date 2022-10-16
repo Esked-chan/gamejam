@@ -4,24 +4,30 @@ import os
 from refactored_very_epic_code_less_go import *
 from moviepy.editor import *
 from video_preview import *
+from mixer import *
 
 def drawMenu():
     pass
 
 
-def drawGame(worldx, worldy):
-    gameStart(worldx, worldy)
+def drawGame(worldx, worldy, win):
+    if (gameStart(worldx, worldy) < 40):
+        msg = "YOU LOST"
+        drawGameOver(worldx, worldy, win, msg)
+    else:
+        msg = "YOU WON"
+        drawGameOver(worldx, worldy, win, msg)
 
 
 def drawOptions():
     pass
 
 
-def drawGameOver(worldx, worldy, win):
+def drawGameOver(worldx, worldy, win, msg):
     bg = pygame.image.load("images/forest.png")
     bg = pygame.transform.scale(bg, (worldx, worldy))
     font = pygame.font.Font('herculanum.ttf', 64)
-    text = font.render('YOU WON', True, (200, 200, 200))
+    text = font.render(msg, True, (200, 200, 200))
     textRect = text.get_rect()
     textRect.center = (worldx / 2, worldy / 2 - 50)
 
@@ -48,7 +54,7 @@ def drawGameOver(worldx, worldy, win):
         else:
             mouseDown = False
         if (textRect2.collidepoint(mouse_pos) and mouseDown):
-            drawGame(worldx, worldy)
+            drawGame(worldx, worldy, win)
             main = False
         if (textRect3.collidepoint(mouse_pos) and mouseDown):
             pygame.quit; sys.quit()
@@ -129,12 +135,13 @@ def main():
             if (textRect.collidepoint(mouse_pos) and mouseDown):
                 state = gameState.INGAME
         elif (state == gameState.INGAME):
-            drawGame(worldx, worldy)
+            drawGame(worldx, worldy, win)
             state = gameState.GAMEOVER
         elif (state == gameState.OPTIONS):
             drawOptions()
         elif (state == gameState.GAMEOVER):
-            drawGameOver(worldx, worldy, win)
+            pass
+            # drawGameOver(worldx, worldy, win)
         elif (state == gameState.ENDED):
             gameEnded()
 
