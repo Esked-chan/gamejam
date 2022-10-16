@@ -1,55 +1,5 @@
-import pygame, sys
  
-clock = pygame.time.Clock()
- 
-from pygame.locals import *
- 
-pygame.init()  # initiates pygame
- 
-pygame.display.set_caption('Pygame Platformer')
- 
-WINDOW_SIZE = (600, 400)
- 
-screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)  # initiate the window
- 
-display = pygame.Surface((300, 200))  # used as the surface for rendering, which is scaled
- 
-moving_right = False
-moving_left = False
-vertical_momentum = 0
-air_timer = 0
- 
-game_map = [['1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',],
-            ['1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',],
-            ['1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',],
-            ['1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',],
-            ['1', '0', '0', '0', '0', '0', '0', '2', '2', '2', '2', '2', '0', '0', '0', '0', '0', '0', '0',],
-            ['1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',],
-            ['1', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '2',],
-            ['1', '1', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '1', '1',],
-            ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',],
-            ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',],
-            ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',],
-            ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',],
-            ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1',]]
- 
-grass_img = pygame.image.load('grass.png')
-dirt_img = pygame.image.load('dirt.png')
- 
-player_img = pygame.image.load('player.png').convert()
-player_img.set_colorkey((255, 255, 255))
- 
-player_rect = pygame.Rect(100, 100, 5, 13)
- 
-def collision_test(rect, tiles):
-    hit_list = []
-    for tile in tiles:
-        if rect.colliderect(tile):
-            hit_list.append(tile)
-    return hit_list
- 
- 
-def move(rect, movement, tiles):
+ ''''def move(rect, movement, tiles):
     collision_types = {'top': False, 'bottom': False, 'right': False, 'left': False}
     rect.x += movement[0]
     hit_list = collision_test(rect, tiles)
@@ -71,7 +21,7 @@ def move(rect, movement, tiles):
             collision_types['top'] = True
  
     return rect, collision_types
- 
+ '''
  
 while True:  # game loop
     display.fill((146, 244, 255))  # clear screen by filling it with blue
