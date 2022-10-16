@@ -193,6 +193,7 @@ class Enemy(Player):
         self.velocityY = self.speed
         self.facing = 1 # -1: LEFT    0: UP    1: RIGHT    2: DOWN
         self.hit = False
+        self.flipped = False
 
     def move(self):
         self.rect.x += self.velocityX
@@ -206,6 +207,11 @@ class Enemy(Player):
             self.velocityY *= -1
         if (self.rect.y + self.rect.h > worldy):
             self.velocityY *= -1
+
+        if self.velocityX < 0:
+            self.flipped = True
+        else:
+            self.flipped = False
 
     def coll_adj(self, rectB):
         array = [0, 0, 0, 0]
@@ -235,30 +241,6 @@ class Enemy(Player):
             self.velocityX = -self.speed
         if min_ix == 3:
             self.velocityY = -self.speed
-
-    def animate(self):
-        xy = self.rect.x
-        yx = self.rect.y
-        if xy < 0:
-            self.frame += 1
-            if self.frame > 3 * ani:
-                self.frame = 0
-            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
-        if xy > 0:
-            self.frame += 1
-            if self.frame > 3 * ani:
-                self.frame = 0
-            self.image = self.images[self.frame // ani]
-        if yx < 0:
-            self.frame += 1
-            if self.frame > 3 * ani:
-                self.frame = 0
-            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
-        if yx > 0:
-            self.frame += 1
-            if self.frame > 3 * ani:
-                self.frame = 0
-            self.image = self.images[self.frame // ani]
 
 
 abspath = os.path.abspath(__file__)
