@@ -8,7 +8,7 @@ main = True
 worldx = 1920
 worldy = 1080
 fps = 60
-ani = 4
+ani = 6
 ALPHA = (0, 255, 0)
 
 # OBJECTS
@@ -57,8 +57,8 @@ class Enemy(Player):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        for e1 in range (0-7):
-            img = pygame.image.load(os.path.join('images/Enemy1', 'Enemy1_' + e1 + '.png')).convert()
+        for e1 in range (0, 7):
+            img = pygame.image.load(os.path.join('images/Enemy1', 'Enemy1_' + str(e1) + '.png')).convert()
             self.images.append(img)
             img.convert_alpha()
             img.set_colorkey(ALPHA)
