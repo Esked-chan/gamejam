@@ -122,13 +122,14 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, facing):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        img = pygame.image.load(os.path.join('images', 'Bullet.png')).convert()
-        img = pygame.transform.scale(img, (20, 30))
-        self.images.append(img)
-        img.convert_alpha()
-        img.set_colorkey(ALPHA)
-        self.image = self.images[0]
-        self.rect = self.image.get_rect()
+        for fireball in range(0, 2):
+            img = pygame.image.load(os.path.join('images/Fireball', 'Fireball' + str(fireball) + '.png')).convert()
+            img = pygame.transform.scale(img, (20, 30))
+            self.images.append(img)
+            img.convert_alpha()
+            img.set_colorkey(ALPHA)
+            self.image = self.images[0]
+            self.rect = self.image.get_rect()
         self.speed = 20
         self.velocityX = 0
         self.velocityY = 0
@@ -145,6 +146,30 @@ class Bullet(pygame.sprite.Sprite):
             self.velocityY = self.speed
         self.rect.x += self.velocityX
         self.rect.y += self.velocityY
+
+    def animate(self):
+        xy = self.rect.x
+        yx = self.rect.y
+        if xy < 0:
+            self.frame += 1
+            if self.frame > 3 * ani:
+                self.frame = 0
+            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
+        if xy > 0:
+            self.frame += 1
+            if self.frame > 3 * ani:
+                self.frame = 0
+            self.image = self.images[self.frame // ani]
+        if yx < 0:
+            self.frame += 1
+            if self.frame > 3 * ani:
+                self.frame = 0
+            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
+        if yx > 0:
+            self.frame += 1
+            if self.frame > 3 * ani:
+                self.frame = 0
+            self.image = self.images[self.frame // ani]
 
 class Enemy(Player):
     def __init__(self):
