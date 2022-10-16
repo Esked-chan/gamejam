@@ -2,11 +2,18 @@ import pygame
 import sys
 import os
 
-worldx = 800
-worldy = 600
+worldx = 1080
+worldy = 720
 fps = 60
 ani = 10
 ALPHA = (0, 255, 0)
+Black = (0 , 0 , 0)
+Red = (255, 0, 0)
+
+h1 = 882
+h2 = 12
+h3 = 0
+h4 = 26
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -354,6 +361,15 @@ while True:
     bullet_list.draw(world)
     enemy_list.draw(world)
 
+    rectangle1 = pygame.Rect(h1,10,200,30)
+    rectangle2 = pygame.Rect(880,10,200,30)
+    rectangle3 = pygame.Rect(882,h2,h3,h4)
+    pygame.draw.rect(world, ALPHA, rectangle1)
+    pygame.draw.rect(world, Black, rectangle2, 2)
+    pygame.draw.rect(world, Red, rectangle3)
+    if (keys[pygame.K_RIGHT]):
+        pygame.draw.rect(world, Red, rectangle3, 5)
+        h3 += 5
+
     clock.tick(fps)
     pygame.display.flip()
-            
