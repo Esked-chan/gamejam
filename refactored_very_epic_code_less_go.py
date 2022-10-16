@@ -31,6 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.facing = 1 # -1: LEFT    0: UP    1: RIGHT    2: DOWN
         self.hit = False
         self.reloading = 500
+        self.flipped = False
 
     def move(self):
         if (self.rect.x < 0):
@@ -106,6 +107,9 @@ class Player(pygame.sprite.Sprite):
             if self.frame > 3 * ani:
                 self.frame = 0
             self.image = self.images[self.frame // ani]
+        if self.flipped:
+            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
+
 #hERE WAS mISHA AND mERI!
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self):
@@ -119,10 +123,10 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, facing):
+    def __init__(self, flip):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        for fireball in range(0, 2):
+        for fireball in range(0, 3):
             img = pygame.image.load(os.path.join('images/Fireball', 'Fireball' + str(fireball) + '.png')).convert()
             img = pygame.transform.scale(img, (60, 90))
             self.images.append(img)
@@ -130,20 +134,17 @@ class Bullet(pygame.sprite.Sprite):
             img.set_colorkey(ALPHA)
             self.image = self.images[0]
             self.rect = self.image.get_rect()
+        self.frame = 0
         self.speed = 10
         self.velocityX = 0
         self.velocityY = 0
-        self.facing = facing
+        self.player_flipped = flip
 
     def move(self):
-        if self.facing == -1:
-            self.velocityX = -self.speed
-        elif self.facing == 1:
+        if not self.player_flipped:
             self.velocityX = self.speed
-        elif self.facing == 0:
-            self.velocityY = -self.speed
-        elif self.facing == 2:
-            self.velocityY = self.speed
+        else:
+            self.velocityX = -self.speed
         self.rect.x += self.velocityX
         self.rect.y += self.velocityY
 
@@ -152,24 +153,28 @@ class Bullet(pygame.sprite.Sprite):
         yx = self.rect.y
         if xy < 0:
             self.frame += 1
-            if self.frame > 3 * ani:
+            if self.frame >= 3 * ani:
                 self.frame = 0
             self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
         if xy > 0:
             self.frame += 1
-            if self.frame > 3 * ani:
+            if self.frame >= 3 * ani:
                 self.frame = 0
             self.image = self.images[self.frame // ani]
         if yx < 0:
             self.frame += 1
-            if self.frame > 3 * ani:
+            if self.frame >= 3 * ani:
                 self.frame = 0
             self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
         if yx > 0:
             self.frame += 1
-            if self.frame > 3 * ani:
+            if self.frame >= 3 * ani:
                 self.frame = 0
             self.image = self.images[self.frame // ani]
+        
+        if not self.player_flipped:
+            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
+        
 
 class Enemy(Player):
     def __init__(self):
@@ -306,9 +311,11 @@ while True:
     if (keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]):
         player.facing = -1
         player.velocityX = -player.speed
+        player.flipped = True
     elif (keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]):
         player.facing = 1
         player.velocityX = player.speed
+        player.flipped = False
     else:
         player.velocityX = 0
     if (keys[pygame.K_UP] and not keys[pygame.K_DOWN]):
@@ -322,7 +329,7 @@ while True:
     if (keys[pygame.K_SPACE]):
         current_time = pygame.time.get_ticks()
         if (current_time - prev_time > player.reloading):
-            bullet = Bullet(player.facing)
+            bullet = Bullet(player.flipped)
             bullet.rect.x = player.rect.x
             bullet.rect.y = player.rect.y
             bullet_list.add(bullet)
@@ -346,6 +353,8 @@ while True:
     player.move()
     for i in range(len(enemy_list.sprites())):
         enemy_list.sprites()[i].animate()
+    for i in range(len(bullet_list.sprites())):
+        bullet_list.sprites()[i].animate()
 
     player_list.draw(world)
     stone_list.draw(world)
